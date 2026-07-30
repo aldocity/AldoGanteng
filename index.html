@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Will you go on a date with me?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff7f0;
+    --card:#ffffff;
+    --pink:#e8236b;
+    --pink-dark:#c81457;
+    --orange:#f2994a;
+    --ink:#2b1b2e;
+    --muted:#8a7d8a;
+    --tag-bg:#1c1c1c;
+    --ring:#ffd9e8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 10%, #ffe3ee 0%, transparent 45%),
+      radial-gradient(circle at 85% 90%, #ffe9d6 0%, transparent 45%),
+      var(--cream);
+    font-family:'Poppins', sans-serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 16px;
+    overflow-x:hidden;
+  }
+  .phone{
+    width:100%;
+    max-width:420px;
+    min-height:640px;
+    background:var(--card);
+    border-radius:28px;
+    box-shadow:0 30px 60px -20px rgba(200,20,87,0.25), 0 2px 8px rgba(0,0,0,0.05);
+    padding:36px 26px 30px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .floaty{
+    position:absolute;
+    font-size:20px;
+    opacity:0.5;
+    animation:drift 6s ease-in-out infinite;
+    pointer-events:none;
+    user-select:none;
+  }
+  @keyframes drift{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-14px) rotate(8deg); }
+  }
+  .step{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    flex:1;
+    animation:fadeIn .45s ease;
+  }
+  .step.active{display:flex;}
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .mascot{
+    width:110px;
+    height:110px;
+    margin-bottom:6px;
+    filter:drop-shadow(0 8px 10px rgba(232,35,107,0.25));
+  }
+  .tag{
+    background:var(--tag-bg);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    padding:7px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  h1{
+    font-family:'DM Serif Display', serif;
+    font-style:italic;
+    color:var(--pink);
+    font-size:32px;
+    line-height:1.15;
+    margin:0 0 6px;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 26px;
+    max-width:300px;
+  }
+  .btn-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    justify-content:center;
+    position:relative;
+    min-height:60px;
+    width:100%;
+  }
+  .btn{
+    border:none;
+    cursor:pointer;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    border-radius:999px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{ transform:scale(0.96); }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--pink), var(--pink-dark));
+    color:#fff;
+    font-size:17px;
+    padding:16px 40px;
+    box-shadow:0 10px 20px -6px rgba(232,35,107,0.5);
+  }
+  .btn-primary:hover{ box-shadow:0 14px 24px -6px rgba(232,35,107,0.6); }
+  .btn-no{
+    background:var(--orange);
+    color:#fff;
+    font-size:14px;
+    padding:12px 22px;
+    position:relative;
+    box-shadow:0 8px 16px -6px rgba(242,153,74,0.5);
+  }
+  .btn-no.dodging{ position:absolute; }
+  .card{
+    background:#fff;
+    border:1px solid #f3e6ee;
+    border-radius:18px;
+    padding:22px;
+    width:100%;
+    text-align:left;
+    box-shadow:0 12px 24px -14px rgba(0,0,0,0.15);
+    margin-bottom:22px;
+  }
+  label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--ink);
+    display:block;
+    margin-bottom:8px;
+  }
+  input[type="date"], select, .fake-select{
+    width:100%;
+    padding:13px 14px;
+    border-radius:12px;
+    border:1.5px solid #f0dfe8;
+    background:#fffaf9;
+    font-family:'Poppins', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    margin-bottom:16px;
+    appearance:none;
+  }
+  select:focus, input:focus{ outline:2px solid var(--ring); border-color:var(--pink); }
+  .foods{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    width:100%;
+    margin-bottom:20px;
+  }
+  .food{
+    background:#fff;
+    border:2px solid #f3e6ee;
+    border-radius:14px;
+    padding:14px 6px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:600;
+    position:relative;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .food span.emoji{ font-size:26px; }
+  .food.selected{
+    border-color:var(--pink);
+    background:#fff2f7;
+  }
+  .food .check{
+    position:absolute;
+    top:6px; right:6px;
+    width:18px; height:18px;
+    background:var(--pink);
+    color:#fff;
+    border-radius:50%;
+    font-size:11px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+  }
+  .food.selected .check{ display:flex; }
+  .summary-row{
+    margin-bottom:16px;
+  }
+  .summary-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .summary-value{
+    font-family:'DM Serif Display', serif;
+    color:var(--pink-dark);
+    font-size:19px;
+  }
+  .ps{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:18px;
+  }
+  .ps b{ color:var(--pink); }
+  .badge{
+    margin-top:16px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#fff1e6;
+    color:var(--orange);
+    font-size:12px;
+    font-weight:700;
+    padding:8px 16px;
+    border-radius:999px;
+  }
+  .progress{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:22px;
+  }
+  .dot{
+    width:22px; height:5px;
+    border-radius:99px;
+    background:#f2e0ea;
+    transition:background .2s ease;
+  }
+  .dot.done{ background:var(--pink); }
+  .toast{
+    position:fixed;
+    bottom:24px; left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:#fff;
+    padding:12px 20px;
+    border-radius:999px;
+    font-size:13px;
+    opacity:0;
+    transition:opacity .25s ease, transform .25s ease;
+    pointer-events:none;
+    white-space:nowrap;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+  <span class="floaty" style="top:8%; left:10%;">💌</span>
+  <span class="floaty" style="top:12%; right:12%; animation-delay:1.5s;">💗</span>
+  <span class="floaty" style="top:5%; left:50%; animation-delay:3s;">✨</span>
+
+  <div class="progress" id="progress">
+    <div class="dot done" data-i="0"></div>
+    <div class="dot" data-i="1"></div>
+    <div class="dot" data-i="2"></div>
+    <div class="dot" data-i="3"></div>
+  </div>
+
+  <!-- STEP 1: Ask -->
+  <div class="step active" id="step-0">
+    <svg class="mascot" viewBox="0 0 120 120" fill="none">
+      <ellipse cx="60" cy="108" rx="20" ry="5" fill="#f4d4de"/>
+      <path d="M30 60 Q10 55 15 40" stroke="#f2c9d6" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M90 60 Q110 55 105 40" stroke="#f2c9d6" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <ellipse cx="60" cy="70" rx="26" ry="30" fill="#e8236b"/>
+      <circle cx="60" cy="38" r="22" fill="#e8236b"/>
+      <ellipse cx="60" cy="18" rx="12" ry="4" fill="#f7c94c" opacity="0.9"/>
+      <circle cx="51" cy="38" r="3" fill="#2b1b2e"/>
+      <circle cx="69" cy="38" r="3" fill="#2b1b2e"/>
+      <circle cx="46" cy="45" r="4" fill="#ff9db8" opacity="0.7"/>
+      <circle cx="74" cy="45" r="4" fill="#ff9db8" opacity="0.7"/>
+      <path d="M52 47 Q60 52 68 47" stroke="#2b1b2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="46" cy="95" rx="8" ry="12" fill="#2b1b2e"/>
+      <ellipse cx="74" cy="95" rx="8" ry="12" fill="#2b1b2e"/>
+    </svg>
+    <div class="tag">no pressure but... say yes 🙏</div>
+    <h1>Will you go on<br>a date with me?</h1>
+    <div class="btn-row" id="btnRow">
+      <button class="btn btn-primary" id="yesBtn">Yes 💖</button>
+      <button class="btn btn-no" id="noBtn">No</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: celebration -->
+  <div class="step" id="step-1">
+    <svg class="mascot" viewBox="0 0 120 120" fill="none">
+      <path d="M30 55 Q8 45 18 25" stroke="#f2c9d6" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M90 55 Q112 45 102 25" stroke="#f2c9d6" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <ellipse cx="60" cy="68" rx="26" ry="30" fill="#e8236b"/>
+      <circle cx="60" cy="36" r="22" fill="#e8236b"/>
+      <ellipse cx="60" cy="16" rx="12" ry="4" fill="#f7c94c" opacity="0.9"/>
+      <circle cx="51" cy="36" r="3" fill="#2b1b2e"/>
+      <circle cx="69" cy="36" r="3" fill="#2b1b2e"/>
+      <path d="M50 46 Q60 54 70 46" stroke="#2b1b2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="28" cy="70" r="9" fill="#2b1b2e"/>
+      <circle cx="92" cy="70" r="9" fill="#2b1b2e"/>
+      <line x1="40" y1="80" x2="28" y2="70" stroke="#e8236b" stroke-width="9" stroke-linecap="round"/>
+      <line x1="80" y1="80" x2="92" y2="70" stroke="#e8236b" stroke-width="9" stroke-linecap="round"/>
+      <text x="20" y="30" font-size="14">✨</text>
+      <text x="88" y="22" font-size="12">🎉</text>
+    </svg>
+    <div class="tag">my heart rn: 📈📈📈</div>
+    <h1 style="font-size:28px;">no way. NO WAY. 😳</h1>
+    <p class="sub">i had a whole speech prepared for if you said no</p>
+    <button class="btn btn-primary" id="toStep2">okay okay! →</button>
+  </div>
+
+  <!-- STEP 3: when -->
+  <div class="step" id="step-2">
+    <svg class="mascot" viewBox="0 0 120 120" fill="none" style="width:90px;height:90px;">
+      <path d="M30 60 Q10 55 15 40" stroke="#f2c9d6" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <ellipse cx="60" cy="70" rx="26" ry="30" fill="#e8236b"/>
+      <circle cx="60" cy="38" r="22" fill="#e8236b"/>
+      <ellipse cx="60" cy="18" rx="12" ry="4" fill="#f7c94c" opacity="0.9"/>
+      <circle cx="51" cy="38" r="3" fill="#2b1b2e"/>
+      <circle cx="69" cy="38" r="3" fill="#2b1b2e"/>
+      <path d="M52 47 Q60 51 68 47" stroke="#2b1b2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="72" y="52" width="26" height="22" rx="3" fill="#fff" stroke="#2b1b2e" stroke-width="2"/>
+      <line x1="72" y1="60" x2="98" y2="60" stroke="#2b1b2e" stroke-width="2"/>
+    </svg>
+    <div class="tag">lock it in bestie 📅</div>
+    <h1 style="font-size:26px;">So... when<br>are you free?</h1>
+    <div class="card">
+      <label>Pick a day ✨</label>
+      <input type="date" id="dateInput" value="2026-06-25">
+      <label>What time? 😏</label>
+      <select id="timeInput">
+        <option value="18:00 — eating with the grandmas">6:00 PM — eating with the grandmas</option>
+        <option value="19:30 — certified rizz hour">7:30 PM — certified rizz hour</option>
+        <option value="21:00 — late night menace mode" selected>9:00 PM — late night menace mode</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="toStep3" style="width:100%;">okay next →</button>
+  </div>
+
+  <!-- STEP 4: food -->
+  <div class="step" id="step-3">
+    <svg class="mascot" viewBox="0 0 120 120" fill="none" style="width:90px;height:90px;">
+      <ellipse cx="60" cy="70" rx="26" ry="30" fill="#e8236b"/>
+      <circle cx="60" cy="38" r="22" fill="#e8236b"/>
+      <circle cx="51" cy="38" r="3" fill="#2b1b2e"/>
+      <circle cx="69" cy="38" r="3" fill="#2b1b2e"/>
+      <ellipse cx="60" cy="48" rx="6" ry="4" fill="#2b1b2e"/>
+      <circle cx="30" cy="55" r="9" fill="#2b1b2e"/>
+      <circle cx="90" cy="55" r="9" fill="#2b1b2e"/>
+      <line x1="42" y1="72" x2="30" y2="55" stroke="#e8236b" stroke-width="9" stroke-linecap="round"/>
+      <line x1="78" y1="72" x2="90" y2="55" stroke="#e8236b" stroke-width="9" stroke-linecap="round"/>
+    </svg>
+    <div class="tag">i'm always hungry tbh 🍔</div>
+    <h1 style="font-size:26px;">What are<br>we feeling?</h1>
+    <p class="sub">(pick as many as you want, no judgement)</p>
+    <div class="foods" id="foods">
+      <div class="food" data-food="Pizza"><span class="check">✓</span><span class="emoji">🍕</span>Pizza</div>
+      <div class="food" data-food="Sushi"><span class="check">✓</span><span class="emoji">🍣</span>Sushi</div>
+      <div class="food" data-food="Burgers"><span class="check">✓</span><span class="emoji">🍔</span>Burgers</div>
+      <div class="food selected" data-food="Pasta"><span class="check">✓</span><span class="emoji">🍝</span>Pasta</div>
+      <div class="food" data-food="Tacos"><span class="check">✓</span><span class="emoji">🌮</span>Tacos</div>
+      <div class="food" data-food="Ramen"><span class="check">✓</span><span class="emoji">🍜</span>Ramen</div>
+    </div>
+    <button class="btn btn-primary" id="toStep4" style="width:100%;">this one! →</button>
+  </div>
+
+  <!-- STEP 5: summary -->
+  <div class="step" id="step-4">
+    <h1 style="font-size:24px;">it's a date 💌</h1>
+    <p class="ps">p.s. normal people text. i made a website for you during lunch. <b>no big deal.</b></p>
+    <div class="card">
+      <div class="summary-row">
+        <div class="summary-label">When</div>
+        <div class="summary-value" id="whenOut">—</div>
+      </div>
+      <div class="summary-row" style="margin-bottom:0;">
+        <div class="summary-label">Food</div>
+        <div class="summary-value" id="foodOut">—</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="copyBtn" style="width:100%;">📋 Copy plan &amp; text me</button>
+    <div class="badge">💗 made with love, just for you, From AldoCity</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Plan copied! Go text them 💌</div>
+
+<script>
+(function(){
+  const steps = [...document.querySelectorAll('.step')];
+  const dots = [...document.querySelectorAll('.dot')];
+  let current = 0;
+
+  function goTo(i){
+    steps[current].classList.remove('active');
+    steps[i].classList.add('active');
+    current = i;
+    dots.forEach((d, idx) => d.classList.toggle('done', idx <= i));
+  }
+
+  // Step 1: dodge "No" button
+  const btnRow = document.getElementById('btnRow');
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+
+  function dodge(){
+    const rowRect = btnRow.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+    noBtn.classList.add('dodging');
+    const maxX = rowRect.width - btnRect.width;
+    const maxY = 60;
+    const x = Math.random() * Math.max(maxX, 40);
+    const y = (Math.random() * maxY) - (maxY / 2);
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  }
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodge(); });
+  noBtn.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
+
+  yesBtn.addEventListener('click', () => goTo(1));
+  document.getElementById('toStep2').addEventListener('click', () => goTo(2));
+  document.getElementById('toStep3').addEventListener('click', () => goTo(3));
+
+  // Step 4: food select (multi)
+  const foods = document.querySelectorAll('.food');
+  foods.forEach(f => {
+    f.addEventListener('click', () => f.classList.toggle('selected'));
+  });
+
+  document.getElementById('toStep4').addEventListener('click', () => {
+    goTo(4);
+    // build summary
+    const dateVal = document.getElementById('dateInput').value;
+    const timeText = document.getElementById('timeInput').selectedOptions[0].text;
+    const dateObj = dateVal ? new Date(dateVal + 'T00:00:00') : new Date();
+    const dateFormatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const timeOnly = timeText.split(' — ')[0];
+
+    document.getElementById('whenOut').textContent = `${dateFormatted} at ${timeOnly}`;
+
+    const selectedFoods = [...document.querySelectorAll('.food.selected')].map(f => f.dataset.food);
+    document.getElementById('foodOut').textContent = selectedFoods.length ? selectedFoods.join(', ') : 'Surprise me';
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const when = document.getElementById('whenOut').textContent;
+    const food = document.getElementById('foodOut').textContent;
+    const text = `it's a date! 💌\nWhen: ${when}\nFood: ${food}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  });
+})();
+</script>
+
+</body>
+</html>
